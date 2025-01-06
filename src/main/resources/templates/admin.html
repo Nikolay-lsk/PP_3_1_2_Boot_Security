@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style>
+        * {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-secondary">
+    <form class="d-flex justify-content-between" th:method="POST" th:action="@{/logout}" th:object="${user}">
+        <div style="color:white">
+            <output th:text="${user.getEmail()}"/>
+            <output>with roles:</output>
+            <div style="display: inline-block" th:each="role : ${user.getRoles()}">
+                <output th:text="${role.getName()}"/>
+            </div>
+        </div>
+        <input class="btn-secondary" style="color:white; border: none " type="submit" value="logout"/>
+    </form>
+</div>
+
+<!--<form th:method="GET" th:action="@{/user/}">-->
+<!--    <input type="submit" value="My user info"/>-->
+<!--</form>-->
+<div class="d-flex flex-row align-items-stretch">
+    <div style="width: 20%">
+        <ul class="list-group" th:each="role: ${user.getRoles()}">
+            <li class="list-group-item active">
+                <a href="#" class="list-group-item list-group-item-action list-group-item-secondary"
+                   th:text="${role.getName()}"></a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <tr th:each="u: ${users}">
+            <td>
+                <div style="display: flex;">
+                    <form th:method="PATCH" th:action="@{/admin/{id}(id=${u.id})}" th:object="${user}">
+                        <label>Name</label>
+                        <input type="text" name="name" th:value="${u.name}">
+                        <label>Surname</label>
+                        <input type="text" name="surname" th:value="${u.surname}">
+                        <label>Email</label>
+                        <input type="text" name="email" th:value="${u.email}">
+                        <label>Password</label>
+                        <input type="password" name="password" th:value="${u.password}">
+                        <label>Salary</label>
+                        <input type="number" name="salary" th:value="${u.salary}">
+                        <input type="submit" value="update">
+
+                    </form>
+                    <form th:method="DELETE" th:action="@{/admin/{id}(id=${u.id})}">
+                        <input type="submit" value="delete">
+                    </form>
+                </div>
+            </td>
+        </tr>
+
+        <form th:method="post" th:action="@{/admin/add}" th:object="${user}">
+            <label for="name">Name</label>
+            <input type="text" th:field="*{name}" id="name">
+            <label for="surname">Surname</label>
+            <input type="text" th:field="*{surname}" id="surname">
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}" id="email">
+            <label for="password">Password</label>
+            <input type="password" th:field="*{password}" id="password">
+            <label for="salary">Salary</label>
+            <input type="number" th:field="*{salary}" id="salary">
+            <input type="submit" value="add">
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
